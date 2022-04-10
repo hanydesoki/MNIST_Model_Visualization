@@ -92,7 +92,9 @@ class App:
 
             self.draw_background()
 
-            self.predict()
+            if sum(pygame.mouse.get_pressed()) and self.drawboard.rect.collidepoint(*pygame.mouse.get_pos()):
+                self.predict()
+
             self.interact(all_events)
             self.clear_button.update()
             self.drawboard.update()
