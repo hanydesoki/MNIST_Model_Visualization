@@ -58,6 +58,7 @@ class App:
 
     def reset_board(self):
         self.drawboard.reset_board()
+        self.predict()
 
     def update_activations(self, X):
         self.activations = self.model.forward_propagation(X, self.model.params)
