@@ -28,6 +28,8 @@ class DrawBoard:
         self.tile_size_x = self.surf_width // self.N_PIXEL_X
         self.tile_size_y = self.surf_height // self.N_PIXEL_Y
 
+        self.curs_radius = int(self.tile_size_x * 1.5)
+
         self.reset_board()
 
     def reset_board(self):
@@ -35,6 +37,14 @@ class DrawBoard:
 
     def draw_surf(self):
         self.screen.blit(self.surf, self.rect)
+
+    def draw_curs(self):
+        mouse_pos = pygame.mouse.get_pos()
+        if self.rect.collidepoint(*mouse_pos):
+            pygame.mouse.set_visible(False)
+            pygame.draw.circle(self.screen, 'white', center=mouse_pos, radius=self.curs_radius)
+        else:
+            pygame.mouse.set_visible(True)
 
     def draw_board(self):
         self.draw_surf()
@@ -45,6 +55,8 @@ class DrawBoard:
                     x = self.topleft_surf[0] + i * self.tile_size_x
                     y = self.topleft_surf[1] + j * self.tile_size_y
                     pygame.draw.rect(self.screen, 'white', (x, y, self.tile_size_x, self.tile_size_y))
+
+        self.draw_curs()
 
     def interact(self):
         mouse_pos = pygame.mouse.get_pos()
