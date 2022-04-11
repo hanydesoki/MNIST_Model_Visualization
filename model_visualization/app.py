@@ -36,6 +36,8 @@ class App:
 
         self.clear_button = Button(self.screen, 20, 20, 'Clear board', size=20)
 
+        self.reset_board()
+
 
     def draw_background(self):
         self.screen.blit(self.background, (0, 0))
