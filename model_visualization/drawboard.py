@@ -40,9 +40,15 @@ class DrawBoard:
 
     def draw_curs(self):
         mouse_pos = pygame.mouse.get_pos()
+
+        if pygame.mouse.get_pressed()[0]: color = (200, 200, 200)
+        elif pygame.mouse.get_pressed()[2]: color = (40, 40, 40)
+        else: color = 'white'
+
+        
         if self.rect.collidepoint(*mouse_pos):
             pygame.mouse.set_visible(False)
-            pygame.draw.circle(self.screen, 'white', center=mouse_pos, radius=self.curs_radius)
+            pygame.draw.circle(self.screen, color, center=mouse_pos, radius=self.curs_radius)
             pygame.draw.circle(self.screen, (100, 100, 100), center=mouse_pos, radius=self.curs_radius, width=2)
         else:
             pygame.mouse.set_visible(True)
