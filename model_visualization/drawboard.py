@@ -43,6 +43,7 @@ class DrawBoard:
         if self.rect.collidepoint(*mouse_pos):
             pygame.mouse.set_visible(False)
             pygame.draw.circle(self.screen, 'white', center=mouse_pos, radius=self.curs_radius)
+            pygame.draw.circle(self.screen, (100, 100, 100), center=mouse_pos, radius=self.curs_radius, width=2)
         else:
             pygame.mouse.set_visible(True)
 
