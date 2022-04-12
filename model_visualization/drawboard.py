@@ -33,19 +33,21 @@ class DrawBoard:
         self.reset_board()
 
     def reset_board(self):
+        """Clear board"""
         self.board = np.zeros((28, 28))
 
     def draw_surf(self):
         self.screen.blit(self.surf, self.rect)
 
     def draw_curs(self):
+        """Draw cursor when hovering on surface"""
         mouse_pos = pygame.mouse.get_pos()
 
         if pygame.mouse.get_pressed()[0]: color = (200, 200, 200)
         elif pygame.mouse.get_pressed()[2]: color = (40, 40, 40)
         else: color = 'white'
 
-        
+
         if self.rect.collidepoint(*mouse_pos):
             pygame.mouse.set_visible(False)
             pygame.draw.circle(self.screen, color, center=mouse_pos, radius=self.curs_radius)
@@ -54,6 +56,7 @@ class DrawBoard:
             pygame.mouse.set_visible(True)
 
     def draw_board(self):
+        """Draw board based on the numpy array content"""
         self.draw_surf()
 
         for i in range(self.N_PIXEL_X):
@@ -66,6 +69,7 @@ class DrawBoard:
         self.draw_curs()
 
     def interact(self):
+        """Update numpy array when interacting with board"""
         mouse_pos = pygame.mouse.get_pos()
 
         pressed_left = pygame.mouse.get_pressed()[0]
@@ -94,6 +98,7 @@ class DrawBoard:
 
 
     def get_array_indexes_from_pos(self, mouse_pos):
+        """Return the corresponding numpy array indexes based on mouse position"""
         mx, my = mouse_pos
 
         i = (mx - self.topleft_surf[0]) // self.tile_size_x
@@ -102,6 +107,7 @@ class DrawBoard:
         return i, j
 
     def get_array(self):
+        """Return board"""
         return self.board
 
     def update(self):

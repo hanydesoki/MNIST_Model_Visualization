@@ -1,15 +1,22 @@
 import pygame
 
 class Button:
+    """Clickable button"""
 
     WHITE = (252, 252, 252)
     BLACK = (0, 0, 0)
     GREY = (200, 200, 200)
     GREY2 = (150, 150, 150)
 
-    def __init__(self, screen, x, y, text, size=20):
-        self.screen = screen
+    def __init__(self, x: int, y: int, text: str, size: int = 20):
+        """
 
+        :param x: topleft x position
+        :param y: topleft y position
+        :param text: button text
+        :param size: text size
+        """
+        self.screen = pygame.display.get_surface()
         self.x = x
         self.y = y
 
@@ -27,7 +34,7 @@ class Button:
         self.history = []
 
     def draw(self):
-
+        """Draw button"""
         if self.clicked:
             self.bg_surface.fill(self.GREY)
         else:
@@ -45,7 +52,7 @@ class Button:
 
 
     def interact(self):
-
+        """Interact with mouse clicking"""
         mouse_pos = pygame.mouse.get_pos()
 
         pressed = pygame.mouse.get_pressed()[0]
@@ -63,6 +70,7 @@ class Button:
 
 
     def check_released(self, must_be_in=True):
+        """Check if button is released"""
         if must_be_in:
             return self.history == [True, False] and self.rect.collidepoint(*pygame.mouse.get_pos())
         else:

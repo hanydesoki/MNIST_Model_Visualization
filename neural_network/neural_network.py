@@ -6,14 +6,22 @@ import tqdm
 import pickle
 
 class NeuralNetwork:
-
+    """Neural network class with basic algorithms"""
     def __init__(self, hidden_layers: tuple, learning_rate: float = 0.1, n_iter: int = 1000, random_state=None):
+        """
+
+        :param hidden_layers: tuple containing for each layer the number of neurons
+        :param learning_rate: value between 0 and 1 for how fast we update weight and bias in gradient descent
+        :param n_iter: number of iteration
+        :param random_state: seed for weight and bias initialisations
+        """
         self.hidden_layers = hidden_layers
         self.learning_rate = learning_rate
         self.n_iter = n_iter
         self.random_state = random_state
 
     def param_initialisation(self, X: np.ndarray, y: np.ndarray):
+        """Weight and bias initalisation based of input data"""
 
         dimensions = list(self.hidden_layers)
         dimensions.insert(0, X.shape[0])
@@ -38,7 +46,7 @@ class NeuralNetwork:
         return params
 
     def forward_propagation(self, X: np.ndarray, params: dict):
-
+        """Foward propagation algorithm using a dictionary that contain weight and bias. Return activations"""
         activations = {'A0': X}
 
         C = len(params) // 2
@@ -50,7 +58,7 @@ class NeuralNetwork:
         return activations
 
     def back_propagation(self, y: np.ndarray, activations: dict, params: dict):
-
+        """Back propagation algorithm using a dictionaries that contain weight, bias and activations. Return gradients"""
         m = y.shape[0]
         C = len(params) // 2
 
@@ -67,7 +75,7 @@ class NeuralNetwork:
         return gradients
 
     def gradient_descent(self, gradients: dict, params: dict):
-
+        """Gradient descent algorithm. Update and return weight and bias"""
         C = len(params) // 2
 
         for c in range(1, C + 1):
@@ -77,7 +85,7 @@ class NeuralNetwork:
         return params
 
     def fit(self, X: np.ndarray, y: np.ndarray):
-
+        """Fit input data and update params attribute that contain weight and bias"""
         params = self.param_initialisation(X, y)
         C = len(params) // 2
 
@@ -97,13 +105,14 @@ class NeuralNetwork:
 
 
     def predict(self, X: np.ndarray):
-
+        """Return last layer activations value from input data"""
         activations = self.forward_propagation(X, self.params)
         C = len(self.params) // 2
         Af = activations[f'A{C}']
         return Af
 
     def plot_loss(self, figsize: tuple = (8, 6)):
+        """Plot log loss graph. Work only after using fit method"""
         if len(self.iterations) < 2:
             raise ValueError('Not enough values to plot')
         plt.figure(figsize=figsize)

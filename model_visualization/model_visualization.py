@@ -14,13 +14,16 @@ class ModelVisualization:
         self.surf = pygame.Surface((self.screen.get_width() // 2, self.screen.get_height()))
         self.surf.fill(self.BACKGROUND_COLOR)
 
+        self.font = pygame.font.SysFont('comicsans', size=10)
+
         self.nodes = None
 
     def update_nodes(self, activations):
+        """Update nodes"""
         self.nodes = self.get_all_node_rects(activations)
 
     def draw_nodes(self):
-
+        """Draw all nodes for each layers with rectangles"""
         if self.nodes is not None:
 
             for node in self.nodes:
@@ -31,6 +34,8 @@ class ModelVisualization:
 
 
     def get_all_node_rects(self, activations):
+        """return all nodes from activations in a list.
+        Each node is a dictionary that contain color, activation value and its rect"""
         C = len(activations)
         node_rects = []
         for c in range(1, C):
@@ -40,10 +45,22 @@ class ModelVisualization:
             h = self.screen.get_height() // number_nodes
             for n, a in enumerate(activations[f'A{c}'].flatten()):
                 color = tuple([int(255 * a) for _ in range(3)])
-                node_rects.append({'color': color, 'rect': (x_pos, n * h, w, h)})
+                node_rects.append({'color': color, 'rect': (x_pos, n * h, w, h), 'val': a})
 
         return node_rects
 
+    def activation_interact(self):
+        """Highlight neuron and show activation value when hovering"""
+        for activation in self.nodes:
+            rect = pygame.Rect(activation['rect'])
+            val = activation['val']
+
+            if rect.collidepoint(*pygame.mouse.get_pos()):
+                text_surf = self.font.render(str(val), True, 'white')
+                x = rect.right + 3
+                y = rect.centery
+                pygame.draw.rect(self.screen, 'red', rect, width=1)
+                self.screen.blit(text_surf, (x, y))
 
     def draw_background(self):
         self.screen.blit(self.surf, self.topleft_surf)
@@ -51,6 +68,7 @@ class ModelVisualization:
     def update(self):
         self.draw_background()
         self.draw_nodes()
+        self.activation_interact()
 
 
 

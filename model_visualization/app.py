@@ -16,6 +16,10 @@ class App:
     BACKGROUND_COLOR = (50, 50, 50)
 
     def __init__(self, model):
+        """
+
+        :param model: trained NeuralNetwork model
+        """
 
         self.model = model
 
@@ -34,7 +38,7 @@ class App:
 
         self.font = pygame.font.SysFont('comicsans', size=30)
 
-        self.clear_button = Button(self.screen, 20, 20, 'Clear board', size=20)
+        self.clear_button = Button(20, 20, 'Clear board', size=20)
 
         self.reset_board()
 
@@ -49,6 +53,7 @@ class App:
                          width=2)
 
     def interact(self, all_events):
+        """Manage to clear board with 'c' or with the 'Clear board' button"""
         for event in all_events:
             if event.type == pygame.KEYDOWN:
 
@@ -58,14 +63,18 @@ class App:
         if self.clear_button.check_released():
             self.reset_board()
 
+
     def reset_board(self):
+        """Clear board"""
         self.drawboard.reset_board()
         self.predict()
 
     def update_activations(self, X):
+        """Update actications attribute by getting activations dictionary with forward propagation"""
         self.activations = self.model.forward_propagation(X, self.model.params)
 
     def predict(self):
+        """Get numpy array from the drawboard and predict digit with the model. Update predicted value attribute"""
         X = self.drawboard.get_array().T.T.T.reshape(1, DrawBoard.N_PIXEL_X * DrawBoard.N_PIXEL_Y)
 
         self.predicted_value = self.model.predict(X.T)[:,0].argmax()
@@ -75,7 +84,7 @@ class App:
         self.model_visualization.update_nodes(self.activations)
 
     def show_prediction(self):
-
+        """Show the predicted value on top of the drawboard"""
         if self.predicted_value is not None:
 
             text_surf = self.font.render(f'Prediction: {self.predicted_value}', True, 'orange')
@@ -86,6 +95,7 @@ class App:
             self.screen.blit(text_surf, rect)
 
     def run(self):
+        """Run application"""
         while True:
             all_events = pygame.event.get()
             for event in all_events:
