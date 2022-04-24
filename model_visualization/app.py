@@ -6,6 +6,7 @@ from .drawboard import DrawBoard
 
 import sys
 
+
 class App:
     """class that manage interaction between
             the model visualization and the drawboard"""
@@ -42,17 +43,16 @@ class App:
 
         self.reset_board()
 
-
-    def draw_background(self):
+    def draw_background(self) -> None:
         self.screen.blit(self.background, (0, 0))
 
-    def draw_midline(self):
+    def draw_midline(self) -> None:
         pygame.draw.line(self.screen, 'white',
                          start_pos=(self.SCREEN_WIDTH // 2, 0),
                          end_pos=(self.SCREEN_WIDTH // 2, self.SCREEN_HEIGHT),
                          width=2)
 
-    def interact(self, all_events):
+    def interact(self, all_events) -> None:
         """Manage to clear board with 'c' or with the 'Clear board' button"""
         for event in all_events:
             if event.type == pygame.KEYDOWN:
@@ -63,17 +63,16 @@ class App:
         if self.clear_button.check_released():
             self.reset_board()
 
-
-    def reset_board(self):
+    def reset_board(self) -> None:
         """Clear board"""
         self.drawboard.reset_board()
         self.predict()
 
-    def update_activations(self, X):
-        """Update actications attribute by getting activations dictionary with forward propagation"""
+    def update_activations(self, X) -> None:
+        """Update activations attribute by getting activations dictionary with forward propagation"""
         self.activations = self.model.forward_propagation(X, self.model.params)
 
-    def predict(self):
+    def predict(self) -> None:
         """Get numpy array from the drawboard and predict digit with the model. Update predicted value attribute"""
         X = self.drawboard.get_array().T.T.T.reshape(1, DrawBoard.N_PIXEL_X * DrawBoard.N_PIXEL_Y)
 
@@ -83,7 +82,7 @@ class App:
         self.update_activations(X.T)
         self.model_visualization.update_nodes(self.activations)
 
-    def show_prediction(self):
+    def show_prediction(self) -> None:
         """Show the predicted value on top of the drawboard"""
         if self.predicted_value is not None:
 
@@ -94,7 +93,7 @@ class App:
 
             self.screen.blit(text_surf, rect)
 
-    def run(self):
+    def run(self) -> None:
         """Run application"""
         while True:
             all_events = pygame.event.get()
@@ -105,6 +104,7 @@ class App:
 
             self.draw_background()
 
+            # Predict when drawing
             if sum(pygame.mouse.get_pressed()) and self.drawboard.rect.collidepoint(*pygame.mouse.get_pos()):
                 self.predict()
 

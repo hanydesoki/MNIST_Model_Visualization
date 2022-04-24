@@ -2,6 +2,7 @@ import pygame
 
 from neural_network import NeuralNetwork
 
+
 class ModelVisualization:
     """class that show in real time neuron interaction when we make a prediction"""
 
@@ -18,11 +19,11 @@ class ModelVisualization:
 
         self.nodes = None
 
-    def update_nodes(self, activations):
+    def update_nodes(self, activations) -> None:
         """Update nodes"""
         self.nodes = self.get_all_node_rects(activations)
 
-    def draw_nodes(self):
+    def draw_nodes(self) -> None:
         """Draw all nodes for each layers with rectangles"""
         if self.nodes is not None:
 
@@ -33,7 +34,7 @@ class ModelVisualization:
                 pygame.draw.rect(self.screen, (100, 0, 0), rect, width=1)
 
 
-    def get_all_node_rects(self, activations):
+    def get_all_node_rects(self, activations) -> list:
         """return all nodes from activations in a list.
         Each node is a dictionary that contain color, activation value and its rect"""
         C = len(activations)
@@ -49,7 +50,7 @@ class ModelVisualization:
 
         return node_rects
 
-    def activation_interact(self):
+    def activation_interact(self) -> None:
         """Highlight neuron and show activation value when hovering"""
         for activation in self.nodes:
             rect = pygame.Rect(activation['rect'])
@@ -62,10 +63,10 @@ class ModelVisualization:
                 pygame.draw.rect(self.screen, 'red', rect, width=1)
                 self.screen.blit(text_surf, (x, y))
 
-    def draw_background(self):
+    def draw_background(self) -> None:
         self.screen.blit(self.surf, self.topleft_surf)
 
-    def update(self):
+    def update(self) -> None:
         self.draw_background()
         self.draw_nodes()
         self.activation_interact()

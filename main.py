@@ -2,7 +2,7 @@ from model_visualization import App
 from neural_network import load_model
 
 
-def main():
+def main() -> None:
 
     model_path = 'mnist_model.pkl'
 

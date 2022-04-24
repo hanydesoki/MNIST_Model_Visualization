@@ -6,7 +6,7 @@ from keras.datasets import mnist
 from keras.utils import np_utils
 
 
-def main():
+def main() -> None:
 
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
@@ -36,6 +36,7 @@ def main():
     print(f'Test accuracy:', mnist_score(y_test, y_pred_test))
 
     mnist_model.plot_loss()
+
 
 if __name__ == '__main__':
     main()

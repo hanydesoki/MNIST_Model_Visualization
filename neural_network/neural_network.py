@@ -5,6 +5,7 @@ import tqdm
 
 import pickle
 
+
 class NeuralNetwork:
     """Neural network class with basic algorithms"""
     def __init__(self, hidden_layers: tuple, learning_rate: float = 0.1, n_iter: int = 1000, random_state=None):
@@ -12,7 +13,7 @@ class NeuralNetwork:
 
         :param hidden_layers: tuple containing for each layer the number of neurons
         :param learning_rate: value between 0 and 1 for how fast we update weight and bias in gradient descent
-        :param n_iter: number of iteration
+        :param n_iter: number of iterations
         :param random_state: seed for weight and bias initialisations
         """
         self.hidden_layers = hidden_layers
@@ -20,7 +21,7 @@ class NeuralNetwork:
         self.n_iter = n_iter
         self.random_state = random_state
 
-    def param_initialisation(self, X: np.ndarray, y: np.ndarray):
+    def param_initialisation(self, X: np.ndarray, y: np.ndarray) -> dict:
         """Weight and bias initalisation based of input data"""
 
         dimensions = list(self.hidden_layers)
@@ -45,7 +46,7 @@ class NeuralNetwork:
 
         return params
 
-    def forward_propagation(self, X: np.ndarray, params: dict):
+    def forward_propagation(self, X: np.ndarray, params: dict) -> dict:
         """Foward propagation algorithm using a dictionary that contain weight and bias. Return activations"""
         activations = {'A0': X}
 
@@ -57,7 +58,7 @@ class NeuralNetwork:
 
         return activations
 
-    def back_propagation(self, y: np.ndarray, activations: dict, params: dict):
+    def back_propagation(self, y: np.ndarray, activations: dict, params: dict) -> dict:
         """Back propagation algorithm using a dictionaries that contain weight, bias and activations. Return gradients"""
         m = y.shape[0]
         C = len(params) // 2
@@ -74,7 +75,7 @@ class NeuralNetwork:
 
         return gradients
 
-    def gradient_descent(self, gradients: dict, params: dict):
+    def gradient_descent(self, gradients: dict, params: dict) -> dict:
         """Gradient descent algorithm. Update and return weight and bias"""
         C = len(params) // 2
 
@@ -103,15 +104,14 @@ class NeuralNetwork:
 
         return self
 
-
-    def predict(self, X: np.ndarray):
+    def predict(self, X: np.ndarray) -> dict:
         """Return last layer activations value from input data"""
         activations = self.forward_propagation(X, self.params)
         C = len(self.params) // 2
         Af = activations[f'A{C}']
         return Af
 
-    def plot_loss(self, figsize: tuple = (8, 6)):
+    def plot_loss(self, figsize: tuple = (8, 6)) -> None:
         """Plot log loss graph. Work only after using fit method"""
         if len(self.iterations) < 2:
             raise ValueError('Not enough values to plot')
@@ -121,16 +121,15 @@ class NeuralNetwork:
         plt.ylabel('Log loss')
         plt.show()
 
-
     @staticmethod
-    def log_loss(A, y):
+    def log_loss(A, y) -> float:
         return 1 / len(y) * np.sum(-y * np.log(A) - (1 - y) * np.log(1 - A))
 
     @staticmethod
-    def sigmoid(Z: np.ndarray):
+    def sigmoid(Z: np.ndarray) -> np.ndarray:
         return 1 / (1 + np.exp(-Z))
 
-    def save(self, path: str):
+    def save(self, path: str) -> None:
         with open(path, 'wb') as f:
             pickle.dump(self, f)
 
